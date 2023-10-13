@@ -33,6 +33,13 @@ function pices() {
 
 		console.log(appState.candidateMove, "candidate move");
 		if (appState.candidateMove.find((m) => m[0] === x && m[1] === y)) {
+			// Em pasant move when current poition empty
+
+			const isPawn = p.endsWith("p");
+			console.log(isPawn, "iswan");
+			if (isPawn && !newPosition[x][y] && x !== rank && y !== file) {
+				newPosition[rank][y] = "";
+			}
 			newPosition[Number(rank)][Number(file)] = "";
 
 			newPosition[x][y] = p;
@@ -74,7 +81,7 @@ function pices() {
 	return (
 		<>
 			<div
-				className='pieces'
+				className="pieces"
 				ref={picesRef}
 				onClick={handelDropClick}
 				onDrop={handelDrop}

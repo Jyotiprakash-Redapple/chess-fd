@@ -167,7 +167,7 @@ let getPawnMoves = ({ position, piece, rank, file }) => {
 /**
  * pawn capture rule
  */
-let getPawnCapture = ({ position, piece, rank, file }) => {
+let getPawnCapture = ({ position, prevPosition, piece, rank, file }) => {
 	const moves = [];
 	const dir = piece === "wp" ? 1 : -1;
 	const enemy = piece[0] === "w" ? "b" : "w";
@@ -188,6 +188,25 @@ let getPawnCapture = ({ position, piece, rank, file }) => {
 		moves.push([rank + dir, file + 1]);
 	}
 
+	// EnPassant
+	// Check if enemy moved twice in last round
+	const enemyPawn = dir === 1 ? "bp" : "wp";
+	const adjacentFiles = [file - 1, file + 1];
+	if (prevPosition) {
+		console.log("function calll");
+		if ((dir === 1 && rank === 4) || (dir === -1 && rank === 3)) {
+			adjacentFiles.forEach((f) => {
+				if (
+					position?.[rank]?.[f] === enemyPawn &&
+					position?.[rank + dir + dir]?.[f] === "" &&
+					prevPosition?.[rank]?.[f] === "" &&
+					prevPosition?.[rank + dir + dir]?.[f] === enemyPawn
+				) {
+					moves.push([rank + dir, f]);
+				}
+			});
+		}
+	}
 	return moves;
 };
 

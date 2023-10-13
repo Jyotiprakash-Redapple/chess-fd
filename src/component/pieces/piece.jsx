@@ -21,13 +21,15 @@ function piece({ rank, file, piece }) {
 
 		// take my turn ...
 		if (appState.turn === piece[0]) {
-			const candicateMove = arbitar.getRegularMove({
+			const candicateMove = arbitar.getValidMoves({
 				position: currentPosition,
+				prevPosition: appState.position[appState.position.length - 2],
 				rank,
 				file,
 				piece,
 			});
 
+			console.log("candidate move ====>", candicateMove);
 			dispatch(makeCandidateMoves({ candicateMove }));
 		}
 	};

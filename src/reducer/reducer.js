@@ -3,6 +3,7 @@ import { actionTypes, gameStatus } from "./constant";
 let reducer = (state, action) => {
 	switch (action.type) {
 		case actionTypes.NEW_MOVE: {
+			console.log("newPosition", action.payload);
 			const turn = state.turn === "w" ? "b" : "w";
 			const newposition = [...state.position, action.payload.newPosition];
 			return {

@@ -41,7 +41,7 @@ let openPromotionBox = ({ rank, file, x, y }) => {
 	};
 };
 
-let closePromotionBox = ({}) => {
+let closePromotionBox = () => {
 	return {
 		type: actionTypes.CLOSE_PROMOTION_BOX,
 		payload: {},

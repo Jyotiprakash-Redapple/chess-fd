@@ -47,9 +47,10 @@ function promot() {
 		newPosition[appState.promotion.rank][appState.promotion.file] = "";
 		newPosition[appState.promotion.x][appState.promotion.y] = color + option;
 
-		dispatch(closePromotionBox({}));
+		console.log("new poslition happen quuenn ", newPosition);
+		dispatch(closePromotionBox());
 		dispatch(clearCandidates());
-		dispatch(makeNewMove(newPosition));
+		dispatch(makeNewMove({ newPosition }));
 	};
 	return (
 		<div

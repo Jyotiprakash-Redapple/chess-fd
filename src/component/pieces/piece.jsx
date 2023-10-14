@@ -28,6 +28,7 @@ function piece({ rank, file, piece }) {
 			const candicateMove = arbitar.getValidMoves({
 				position: currentPosition,
 				prevPosition: appState.position[appState.position.length - 2],
+				castelDirection: appState.castlingdir[appState.turn],
 				rank,
 				file,
 				piece,
@@ -50,6 +51,7 @@ function piece({ rank, file, piece }) {
 			const candicateMove = arbitar.getValidMoves({
 				position: currentPosition,
 				prevPosition: appState.position[appState.position.length - 2],
+				castelDirection: appState.castlingdir[appState.turn],
 				rank,
 				file,
 				piece,

@@ -209,6 +209,79 @@ let getPawnCapture = ({ position, prevPosition, piece, rank, file }) => {
 	return moves;
 };
 
+/**
+ * validate catling dir
+ */
+let getCastlingMove = ({ position, castelDirection, piece, rank, file }) => {
+	const move = [];
+
+	if (file !== 4 || rank % 7 !== 0 || castelDirection === "none") {
+		return move;
+	}
+
+	if (piece.startsWith("w")) {
+		if (
+			["left", "both"].includes(castelDirection) &&
+			!position[0][3] &&
+			!position[0][1] &&
+			!position[0][2] &&
+			position[0][0] === "wr"
+		) {
+			move.push([0, 2]);
+		}
+		if (
+			["right", "both"].includes(castelDirection) &&
+			!position[0][5] &&
+			!position[0][6] &&
+			position[0][7] === "wr"
+		) {
+			move.push([0, 6]);
+		}
+	} else {
+		if (
+			["left", "both"].includes(castelDirection) &&
+			!position[7][3] &&
+			!position[7][1] &&
+			!position[7][2] &&
+			position[7][0] === "br"
+		) {
+			move.push([7, 2]);
+		}
+		if (
+			["right", "both"].includes(castelDirection) &&
+			!position[7][5] &&
+			!position[7][6] &&
+			position[7][7] === "br"
+		) {
+			move.push([7, 6]);
+		}
+	}
+	return move;
+};
+
+let getCastlingDir = ({ castelDirection, piece, rank, file }) => {
+	file = Number(file);
+	rank = Number(rank);
+	const direction = castelDirection[piece[0]];
+	if (piece.endsWith("k")) return "none";
+
+	if (file === 0 && rank === 0) {
+		if (direction === "both") return "right";
+		if (direction === "left") return "none";
+	}
+	if (file === 7 && rank === 0) {
+		if (direction === "both") return "left";
+		if (direction === "right") return "none";
+	}
+	if (file === 0 && rank === 7) {
+		if (direction === "both") return "right";
+		if (direction === "left") return "none";
+	}
+	if (file === 7 && rank === 7) {
+		if (direction === "both") return "left";
+		if (direction === "right") return "none";
+	}
+};
 export {
 	getRookMoves,
 	getKingMoves,
@@ -217,4 +290,6 @@ export {
 	getPawnMoves,
 	getBishopMoves,
 	getPawnCapture,
+	getCastlingMove,
+	getCastlingDir,
 };

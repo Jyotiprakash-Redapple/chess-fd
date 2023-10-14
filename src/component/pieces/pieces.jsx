@@ -9,8 +9,10 @@ import {
 	clearCandidates,
 	clearPorn,
 	openPromotionBox,
+	updateCastlingMove,
 } from "../../reducer/move";
 import { arbitar } from "../../arbitar/arbitar";
+import { getCastlingDir } from "../../arbitar/getMoves";
 function pices() {
 	const { appState, dispatch } = useAppContext();
 	const currentPosition = appState.position[appState.position.length - 1];
@@ -39,6 +41,21 @@ function pices() {
 		);
 	};
 
+	/**
+	 * handel updated castling move
+	 */
+
+	const updateCastlingDir = ({ piece, rank, file }) => {
+		const dir = getCastlingDir({
+			castelDirection: appState.castlingdir,
+			piece,
+			rank,
+			file,
+		});
+		if (dir) {
+			dispatch(updateCastlingMove(dir));
+		}
+	};
 	/**
 	 * drop event handel
 	 */
@@ -91,6 +108,10 @@ function pices() {
 				if ((piece === "wp" && x === 7) || (piece === "bp" && x === 0)) {
 					handelOpenPromotionBox({ rank, file, x, y });
 					return;
+				}
+
+				if (piece.endsWith("k") || piece.endsWith("r")) {
+					updateCastlingDir({ piece, rank, file });
 				}
 				const newPosition = arbitar.checkAmove({
 					position: currentPosition,

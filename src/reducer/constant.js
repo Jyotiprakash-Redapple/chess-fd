@@ -14,6 +14,10 @@ let initGame = {
 	porn: "",
 	status: gameStatus.ongoing,
 	promotion: null,
+	castlingdir: {
+		w: "both",
+		b: "both",
+	},
 };
 Object.freeze(initGame);
 
@@ -25,5 +29,6 @@ let actionTypes = {
 	CLEAR_CANDIDATE_MOVES: "CLEAR_CANDIDATE_MOVES",
 	OPEN_PROMOTION_BOX: "OPEN_PROMOTION_BOX",
 	CLOSE_PROMOTION_BOX: "CLOSE_PROMOTION_BOX",
+	CHECK_CASTEL: "CHECK_CASTEL",
 };
 export { initGame, actionTypes, gameStatus };

@@ -51,6 +51,15 @@ let reducer = (state, action) => {
 				promotion: action.payload,
 			};
 		}
+		case actionTypes.CHECK_CASTEL: {
+			let { turn, castlingdir } = state;
+			castlingdir[turn] = action.payload;
+			return {
+				...state,
+				status: gameStatus.ongoing,
+				promotion: action.payload,
+			};
+		}
 		default: {
 			state;
 			break;

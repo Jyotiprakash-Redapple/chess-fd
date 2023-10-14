@@ -47,6 +47,13 @@ let closePromotionBox = () => {
 		payload: {},
 	};
 };
+
+let updateCastlingMove = (direction) => {
+	return {
+		type: actionTypes.CHECK_CASTEL,
+		payload: direction,
+	};
+};
 export {
 	makeNewMove,
 	makeCandidateMoves,
@@ -55,4 +62,5 @@ export {
 	clearPorn,
 	openPromotionBox,
 	closePromotionBox,
+	updateCastlingMove,
 };

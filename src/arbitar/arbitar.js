@@ -6,6 +6,7 @@ import {
 	getPawnMoves,
 	getBishopMoves,
 	getPawnCapture,
+	getCastlingMove,
 } from "./getMoves";
 
 import { isPawnMove, isNotPawnMove } from "./move";
@@ -24,7 +25,14 @@ let arbitar = {
 			return [...getPawnMoves({ position, piece, rank, file })];
 	},
 
-	getValidMoves: function ({ position, prevPosition, piece, rank, file }) {
+	getValidMoves: function ({
+		position,
+		castelDirection,
+		prevPosition,
+		piece,
+		rank,
+		file,
+	}) {
 		let moves = this.getRegularMove({ position, piece, rank, file });
 		const notInCheckMoves = [];
 
@@ -32,6 +40,12 @@ let arbitar = {
 			moves = [
 				...moves,
 				...getPawnCapture({ position, prevPosition, piece, rank, file }),
+			];
+		}
+		if (piece.endsWith("k")) {
+			moves = [
+				...moves,
+				...getCastlingMove({ position, castelDirection, piece, rank, file }),
 			];
 		}
 

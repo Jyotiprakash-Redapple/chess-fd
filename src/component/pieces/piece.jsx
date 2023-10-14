@@ -10,6 +10,10 @@ function piece({ rank, file, piece }) {
 	const currentPosition = appState.position[appState.position.length - 1];
 
 	/**
+	 * move function
+	 */
+
+	/**
 	 *  darg event handel
 	 */
 	const handelDragStart = (e) => {
@@ -29,7 +33,6 @@ function piece({ rank, file, piece }) {
 				piece,
 			});
 
-			console.log("candidate move ====>", candicateMove);
 			dispatch(makeCandidateMoves({ candicateMove }));
 		}
 	};
@@ -44,8 +47,9 @@ function piece({ rank, file, piece }) {
 	const handelClick = (e) => {
 		// check my turn
 		if (appState.turn === piece[0]) {
-			const candicateMove = arbitar.getRegularMove({
+			const candicateMove = arbitar.getValidMoves({
 				position: currentPosition,
+				prevPosition: appState.position[appState.position.length - 2],
 				rank,
 				file,
 				piece,

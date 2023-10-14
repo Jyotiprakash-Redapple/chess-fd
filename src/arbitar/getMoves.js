@@ -193,7 +193,6 @@ let getPawnCapture = ({ position, prevPosition, piece, rank, file }) => {
 	const enemyPawn = dir === 1 ? "bp" : "wp";
 	const adjacentFiles = [file - 1, file + 1];
 	if (prevPosition) {
-		console.log("function calll");
 		if ((dir === 1 && rank === 4) || (dir === -1 && rank === 3)) {
 			adjacentFiles.forEach((f) => {
 				if (

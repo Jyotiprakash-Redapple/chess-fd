@@ -33,10 +33,26 @@ let clearPorn = () => {
 		payload: "",
 	};
 };
+
+let openPromotionBox = ({ rank, file, x, y }) => {
+	return {
+		type: actionTypes.OPEN_PROMOTION_BOX,
+		payload: { rank, file, x, y },
+	};
+};
+
+let closePromotionBox = ({}) => {
+	return {
+		type: actionTypes.CLOSE_PROMOTION_BOX,
+		payload: {},
+	};
+};
 export {
 	makeNewMove,
 	makeCandidateMoves,
 	clearCandidates,
 	makeNewClickMove,
 	clearPorn,
+	openPromotionBox,
+	closePromotionBox,
 };

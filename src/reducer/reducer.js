@@ -1,4 +1,5 @@
-import { actionTypes } from "./constant";
+import { actionTypes, gameStatus } from "./constant";
+
 let reducer = (state, action) => {
 	switch (action.type) {
 		case actionTypes.NEW_MOVE: {
@@ -32,6 +33,21 @@ let reducer = (state, action) => {
 			return {
 				...state,
 				porn: action.payload.porn,
+			};
+		}
+		case actionTypes.OPEN_PROMOTION_BOX: {
+			return {
+				...state,
+				status: gameStatus.promoting,
+				promotion: action.payload,
+			};
+		}
+
+		case actionTypes.CLOSE_PROMOTION_BOX: {
+			return {
+				...state,
+				status: gameStatus.ongoing,
+				promotion: action.payload,
 			};
 		}
 		default: {

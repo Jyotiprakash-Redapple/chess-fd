@@ -9,7 +9,6 @@ import Pupup from "../../component/promotion/popupbox";
 function Board() {
 	const { appState } = useAppContext();
 
-	console.log(appState, "app state history");
 	const currentPosition = appState.position[appState.position.length - 1];
 
 	/**

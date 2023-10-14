@@ -8,17 +8,19 @@ function CandidateMove() {
 		<div className="candidate_move">
 			<table>
 				<thead>
-					<th>TURN</th>
+					<td>TURN</td>
 				</thead>
-				<tr>
-					<td>{appState.turn}</td>
-					{/*<td>{appState.candidateMove.map((el) => {
+				<tbody>
+					<tr>
+						<td>{appState.turn}</td>
+						{/*<td>{appState.candidateMove.map((el) => {
 						return (
 							<br />
 							<span></span>
 					)
 				})}</td> */}
-				</tr>
+					</tr>
+				</tbody>
 			</table>
 		</div>
 	);

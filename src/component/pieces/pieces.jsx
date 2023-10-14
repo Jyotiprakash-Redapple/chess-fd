@@ -4,7 +4,12 @@ import Piece from "./piece";
 import { copyPosition } from "../../helper/helper";
 import { useAppContext } from "../../context/Provider";
 
-import { makeNewMove, clearCandidates, clearPorn } from "../../reducer/move";
+import {
+	makeNewMove,
+	clearCandidates,
+	clearPorn,
+	openPromotionBox,
+} from "../../reducer/move";
 import { arbitar } from "../../arbitar/arbitar";
 function pices() {
 	const { appState, dispatch } = useAppContext();
@@ -23,6 +28,17 @@ function pices() {
 
 		return { x, y };
 	};
+
+	/**
+	 * open promotion box
+	 */
+
+	const handelOpenPromotionBox = ({ rank, file, x, y }) => {
+		dispatch(
+			openPromotionBox({ rank: Number(rank), file: Number(file), x, y })
+		);
+	};
+
 	/**
 	 * drop event handel
 	 */
@@ -31,10 +47,13 @@ function pices() {
 
 		const [piece, rank, file] = e.dataTransfer.getData("text").split(",");
 
-		console.log(appState.candidateMove, "candidate move");
 		if (appState.candidateMove.find((m) => m[0] === x && m[1] === y)) {
 			// Em pasant move when current poition empty
 
+			if ((piece === "wp" && x === 7) || (piece === "bp" && x === 0)) {
+				handelOpenPromotionBox({ rank, file, x, y });
+				return;
+			}
 			const newPosition = arbitar.checkAmove({
 				position: currentPosition,
 				x,
@@ -62,15 +81,25 @@ function pices() {
 	 */
 	const handelDropClick = (e) => {
 		if (appState.porn) {
-			const newPosition = copyPosition(currentPosition);
 			const { x, y } = calculateCoords(e);
 
-			const [p, rank, file] = appState.porn.split(",");
+			const [piece, rank, file] = appState.porn.split(",");
 
 			if (appState.candidateMove.find((m) => m[0] === x && m[1] === y)) {
-				newPosition[Number(rank)][Number(file)] = "";
+				// Em pasant move when current poition empty
 
-				newPosition[x][y] = p;
+				if ((piece === "wp" && x === 7) || (piece === "bp" && x === 0)) {
+					handelOpenPromotionBox({ rank, file, x, y });
+					return;
+				}
+				const newPosition = arbitar.checkAmove({
+					position: currentPosition,
+					x,
+					y,
+					rank,
+					file,
+					piece,
+				});
 
 				dispatch(makeNewMove({ newPosition }));
 			}

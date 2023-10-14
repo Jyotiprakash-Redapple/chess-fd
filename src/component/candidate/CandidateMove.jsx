@@ -5,11 +5,11 @@ function CandidateMove() {
 
 	// console.log(currentPosition, "current position");
 	return (
-		<div className='candidate_move'>
+		<div className="candidate_move">
 			<table>
-				<tr>
+				<thead>
 					<th>TURN</th>
-				</tr>
+				</thead>
 				<tr>
 					<td>{appState.turn}</td>
 					{/*<td>{appState.candidateMove.map((el) => {

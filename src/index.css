@@ -285,7 +285,9 @@ html::before {
 .boards {
 	position: relative;
 	display: grid;
-	grid-template-columns: calc(0.25 * var(--tile-size)) calc(8 * var(--tile-size));
+	grid-template-columns: calc(0.25 * var(--tile-size)) calc(
+			8 * var(--tile-size)
+		);
 	grid-template-rows: calc(8 * var(--tile-size)) calc(0.25 * var(--tile-size));
 }
 .tiles {
@@ -389,4 +391,64 @@ tr:nth-child(even) {
 }
 .bg-salmon {
 	background-color: salmon;
+}
+
+/** Promotion style **/
+.popup {
+	right: 0;
+	top: 0;
+	position: absolute;
+	left: calc(0.25 * var(--tile-size));
+	bottom: calc(0.25 * var(--tile-size));
+	background: var(--highlight);
+}
+.popup--inner {
+	width: 50%;
+	min-height: 12.5%;
+	background: var(--light-tiles);
+	position: absolute;
+	border: 8px solid var(--light-tiles);
+	box-shadow: 0 0 0 8px var(--dark-tiles);
+}
+.popup--inner__center {
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	text-align: center;
+	padding: 1em 0;
+}
+
+.popup--inner__center h1 {
+	font-size: 2.5em;
+	margin: 0 0 0.5em 0;
+}
+.popup--inner__center p {
+	font-size: 1.2em;
+	margin: 0 0 1em 0;
+}
+
+.promotion-choices {
+	height: 12.5%;
+}
+
+.promotion-choices .piece {
+	width: 25%;
+	height: 100%;
+	border: 1px solid var(--dark-tiles);
+}
+.promotion-choices .piece:hover {
+	box-shadow: 0 0 0 5px var(--dark-tiles) inset;
+	transform: scale(1.05);
+}
+.promotion-choices :is(.wq, .bq) {
+	left: 0;
+}
+.promotion-choices :is(.wr, .br) {
+	left: 25%;
+}
+.promotion-choices :is(.wb, .bb) {
+	left: 50%;
+}
+.promotion-choices :is(.wn, .bn) {
+	left: 75%;
 }

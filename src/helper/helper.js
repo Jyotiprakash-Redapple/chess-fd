@@ -46,4 +46,5 @@ let AsciiToChar = (ascii) => {
 
 	return char;
 };
+
 export { createPosition, copyPosition, AsciiToChar };

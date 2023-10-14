@@ -7,6 +7,8 @@ import {
 	getBishopMoves,
 	getPawnCapture,
 } from "./getMoves";
+
+import { isPawnMove, isNotPawnMove } from "./move";
 let arbitar = {
 	getRegularMove: function ({ position, rank, file, piece }) {
 		if (piece.endsWith("n")) return getKnightMoves({ position, rank, file });
@@ -34,6 +36,16 @@ let arbitar = {
 		}
 
 		return moves;
+	},
+
+	// check is pawn or
+	checkAmove: function ({ position, piece, rank, file, x, y }) {
+		const isPawn = piece.endsWith("p");
+		if (isPawn) {
+			return isPawnMove({ position, piece, rank, file, x, y });
+		} else {
+			return isNotPawnMove({ position, piece, rank, file, x, y });
+		}
 	},
 };
 

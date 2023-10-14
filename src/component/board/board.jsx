@@ -4,6 +4,8 @@ import File from "./bitter/file";
 import Pieces from "../pieces/pieces";
 import CandidateMove from "../candidate/CandidateMove";
 import { useAppContext } from "../../context/Provider";
+
+import Pupup from "../../component/promotion/popupbox";
 function Board() {
 	const { appState } = useAppContext();
 
@@ -37,11 +39,11 @@ function Board() {
 		.map((x, i) => i + 1);
 
 	return (
-		<div className='container'>
+		<div className="container">
 			<CandidateMove />
-			<div className='boards'>
+			<div className="boards">
 				<Rank rank={ranks} />
-				<div className='tiles'>
+				<div className="tiles">
 					{ranks.map((rank, i) =>
 						files.map((file, j) => (
 							<div
@@ -52,6 +54,7 @@ function Board() {
 						))
 					)}
 				</div>
+				<Pupup />
 				<Pieces />
 				<File file={files} />
 			</div>

@@ -5,6 +5,7 @@ import { copyPosition } from "../../helper/helper";
 import { useAppContext } from "../../context/Provider";
 
 import { makeNewMove, clearCandidates, clearPorn } from "../../reducer/move";
+import { arbitar } from "../../arbitar/arbitar";
 function pices() {
 	const { appState, dispatch } = useAppContext();
 	const currentPosition = appState.position[appState.position.length - 1];
@@ -26,23 +27,22 @@ function pices() {
 	 * drop event handel
 	 */
 	const handelDrop = (e) => {
-		const newPosition = copyPosition(currentPosition);
 		const { x, y } = calculateCoords(e);
 
-		const [p, rank, file] = e.dataTransfer.getData("text").split(",");
+		const [piece, rank, file] = e.dataTransfer.getData("text").split(",");
 
 		console.log(appState.candidateMove, "candidate move");
 		if (appState.candidateMove.find((m) => m[0] === x && m[1] === y)) {
 			// Em pasant move when current poition empty
 
-			const isPawn = p.endsWith("p");
-			console.log(isPawn, "iswan");
-			if (isPawn && !newPosition[x][y] && x !== rank && y !== file) {
-				newPosition[rank][y] = "";
-			}
-			newPosition[Number(rank)][Number(file)] = "";
-
-			newPosition[x][y] = p;
+			const newPosition = arbitar.checkAmove({
+				position: currentPosition,
+				x,
+				y,
+				rank,
+				file,
+				piece,
+			});
 
 			dispatch(makeNewMove({ newPosition }));
 		}

@@ -67,6 +67,13 @@ let reducer = (state, action) => {
 			};
 		}
 
+		case actionTypes.DECTACT_INSUFFICIANT_MATARIAL: {
+			return {
+				...state,
+				status: gameStatus.insufficiant,
+			};
+		}
+
 		case actionTypes.NEW_GAME: {
 			return {
 				...action.payload,

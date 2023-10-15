@@ -11,6 +11,7 @@ import {
 	openPromotionBox,
 	updateCastlingMove,
 	dectactStalemet,
+	dectactInSufficiantMatarial,
 } from "../../reducer/move";
 import { arbitar } from "../../arbitar/arbitar";
 import { getCastlingDir } from "../../arbitar/getMoves";
@@ -128,8 +129,11 @@ function pices() {
 
 				dispatch(makeNewMove({ newPosition }));
 
-				if (arbitar.isStalemate(newPosition, opponet, castelDirection)) {
+				if (arbitar.insufficientMaterial(newPosition)) {
+					dispatch(dectactInSufficiantMatarial());
+				} else if (arbitar.isStalemate(newPosition, opponet, castelDirection)) {
 					dispatch(dectactStalemet());
+				} else if (arbitar.isCheckMate(newPosition, opponet, castelDirection)) {
 				}
 			}
 			dispatch(clearCandidates());

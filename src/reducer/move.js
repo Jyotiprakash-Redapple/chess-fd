@@ -62,6 +62,11 @@ let dectactStalemet = () => {
 	};
 };
 
+let dectactInSufficiantMatarial = () => {
+	return {
+		type: actionTypes.DECTACT_INSUFFICIANT_MATARIAL,
+	};
+};
 let newGameStart = () => {
 	return {
 		type: actionTypes.NEW_GAME,
@@ -79,4 +84,5 @@ export {
 	updateCastlingMove,
 	dectactStalemet,
 	newGameStart,
+	dectactInSufficiantMatarial,
 };

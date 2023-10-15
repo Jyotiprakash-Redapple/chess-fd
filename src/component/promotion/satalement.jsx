@@ -11,7 +11,7 @@ function satalement() {
 	return (
 		<div className="satalement_modal">
 			<h1>Game Draw </h1>
-			<p>{gameStatus.stalemet}</p>
+			<p>{appState.status}</p>
 			<button
 				className="new-game-button"
 				onClick={() => {

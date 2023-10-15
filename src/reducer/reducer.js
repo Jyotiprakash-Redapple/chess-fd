@@ -73,6 +73,12 @@ let reducer = (state, action) => {
 				status: gameStatus.insufficiant,
 			};
 		}
+		case actionTypes.WIN: {
+			return {
+				...state,
+				status: action.payload === "w" ? gameStatus.white : gameStatus.black,
+			};
+		}
 
 		case actionTypes.NEW_GAME: {
 			return {

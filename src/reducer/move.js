@@ -67,6 +67,14 @@ let dectactInSufficiantMatarial = () => {
 		type: actionTypes.DECTACT_INSUFFICIANT_MATARIAL,
 	};
 };
+
+let dectactCheckmate = (winner) => {
+	return {
+		type: actionTypes.WIN,
+		payload: winner,
+	};
+};
+
 let newGameStart = () => {
 	return {
 		type: actionTypes.NEW_GAME,
@@ -83,6 +91,7 @@ export {
 	closePromotionBox,
 	updateCastlingMove,
 	dectactStalemet,
+	dectactCheckmate,
 	newGameStart,
 	dectactInSufficiantMatarial,
 };

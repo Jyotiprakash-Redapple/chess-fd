@@ -12,6 +12,7 @@ import {
 	updateCastlingMove,
 	dectactStalemet,
 	dectactInSufficiantMatarial,
+	dectactCheckmate,
 } from "../../reducer/move";
 import { arbitar } from "../../arbitar/arbitar";
 import { getCastlingDir } from "../../arbitar/getMoves";
@@ -134,6 +135,7 @@ function pices() {
 				} else if (arbitar.isStalemate(newPosition, opponet, castelDirection)) {
 					dispatch(dectactStalemet());
 				} else if (arbitar.isCheckMate(newPosition, opponet, castelDirection)) {
+					dispatch(dectactCheckmate(piece[0]));
 				}
 			}
 			dispatch(clearCandidates());

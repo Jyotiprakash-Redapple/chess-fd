@@ -167,14 +167,14 @@ let arbitar = {
 		return false;
 	},
 	isCheckMate: function (position, player, castleDirection) {
-		const isInCheck = this.isPlayerInCheck({
+		const isInCheck = this.isPlayerChecked({
 			positionAfterMove: position,
 			player,
 		});
 
 		if (!isInCheck) return false;
 
-		const pieces = getPieces(position, player);
+		const pieces = getEnemyPices(position, player);
 		const moves = pieces.reduce(
 			(acc, p) =>
 				(acc = [

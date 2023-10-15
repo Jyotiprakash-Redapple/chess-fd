@@ -6,12 +6,31 @@ import CandidateMove from "../candidate/CandidateMove";
 import { useAppContext } from "../../context/Provider";
 
 import Pupup from "../../component/promotion/popupbox";
+import { arbitar } from "../../arbitar/arbitar";
+import { getKingPosition } from "../../arbitar/getMoves";
 function Board() {
 	const { appState } = useAppContext();
 
 	console.log(appState, "app state =====>");
 	const currentPosition = appState.position[appState.position.length - 1];
 
+	/**
+	 * check every time king check or not
+	 *
+	 *
+	 */
+
+	const isChecked = (() => {
+		const isChecked = arbitar.isPlayerChecked({
+			positionAfterMove: currentPosition,
+			player: appState.turn,
+		});
+
+		if (isChecked) {
+			return getKingPosition(currentPosition, appState.turn);
+		}
+		return null;
+	})();
 	/**
 	 * get class dynamically
 	 */
@@ -24,6 +43,10 @@ function Board() {
 			} else {
 				c += " highlight";
 			}
+		}
+
+		if (isChecked && isChecked[0] == i && isChecked[1] == j) {
+			c += " checked";
 		}
 		return c;
 	};

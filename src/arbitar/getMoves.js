@@ -1,3 +1,5 @@
+import { arbitar } from "./arbitar";
+
 /**
  * rook move rule
  */
@@ -220,12 +222,37 @@ let getCastlingMove = ({ position, castelDirection, piece, rank, file }) => {
 	}
 
 	if (piece.startsWith("w")) {
+		if (arbitar.isPlayerChecked({ positionAfterMove: position, player: "w" })) {
+			return move;
+		}
 		if (
 			["left", "both"].includes(castelDirection) &&
 			!position[0][3] &&
 			!position[0][1] &&
 			!position[0][2] &&
-			position[0][0] === "wr"
+			position[0][0] === "wr" &&
+			!arbitar.isPlayerChecked({
+				positionAfterMove: arbitar.checkAmove({
+					position,
+					piece,
+					rank,
+					file,
+					x: 0,
+					y: 3,
+				}),
+				player: "w",
+			}) &&
+			!arbitar.isPlayerChecked({
+				positionAfterMove: arbitar.checkAmove({
+					position,
+					piece,
+					rank,
+					file,
+					x: 0,
+					y: 2,
+				}),
+				player: "w",
+			})
 		) {
 			move.push([0, 2]);
 		}
@@ -233,17 +260,64 @@ let getCastlingMove = ({ position, castelDirection, piece, rank, file }) => {
 			["right", "both"].includes(castelDirection) &&
 			!position[0][5] &&
 			!position[0][6] &&
-			position[0][7] === "wr"
+			position[0][7] === "wr" &&
+			!arbitar.isPlayerChecked({
+				positionAfterMove: arbitar.checkAmove({
+					position,
+					piece,
+					rank,
+					file,
+					x: 0,
+					y: 5,
+				}),
+				player: "w",
+			}) &&
+			!arbitar.isPlayerChecked({
+				positionAfterMove: arbitar.checkAmove({
+					position,
+					piece,
+					rank,
+					file,
+					x: 0,
+					y: 6,
+				}),
+				player: "w",
+			})
 		) {
 			move.push([0, 6]);
 		}
 	} else {
+		if (arbitar.isPlayerChecked({ positionAfterMove: position, player: "b" })) {
+			return move;
+		}
 		if (
 			["left", "both"].includes(castelDirection) &&
 			!position[7][3] &&
 			!position[7][1] &&
 			!position[7][2] &&
-			position[7][0] === "br"
+			position[7][0] === "br" &&
+			!arbitar.isPlayerChecked({
+				positionAfterMove: arbitar.checkAmove({
+					position,
+					piece,
+					rank,
+					file,
+					x: 7,
+					y: 3,
+				}),
+				player: "b",
+			}) &&
+			!arbitar.isPlayerChecked({
+				positionAfterMove: arbitar.checkAmove({
+					position,
+					piece,
+					rank,
+					file,
+					x: 7,
+					y: 2,
+				}),
+				player: "b",
+			})
 		) {
 			move.push([7, 2]);
 		}
@@ -251,7 +325,29 @@ let getCastlingMove = ({ position, castelDirection, piece, rank, file }) => {
 			["right", "both"].includes(castelDirection) &&
 			!position[7][5] &&
 			!position[7][6] &&
-			position[7][7] === "br"
+			position[7][7] === "br" &&
+			!arbitar.isPlayerChecked({
+				positionAfterMove: arbitar.checkAmove({
+					position,
+					piece,
+					rank,
+					file,
+					x: 7,
+					y: 5,
+				}),
+				player: "b",
+			}) &&
+			!arbitar.isPlayerChecked({
+				positionAfterMove: arbitar.checkAmove({
+					position,
+					piece,
+					rank,
+					file,
+					x: 7,
+					y: 6,
+				}),
+				player: "b",
+			})
 		) {
 			move.push([7, 6]);
 		}
@@ -282,6 +378,32 @@ let getCastlingDir = ({ castelDirection, piece, rank, file }) => {
 		if (direction === "right") return "none";
 	}
 };
+
+let getEnemyPices = (position, enemy) => {
+	const enemyPieces = [];
+	position.forEach((rank, x) => {
+		rank.forEach((file, y) => {
+			if (position[x][y].startsWith(enemy))
+				enemyPieces.push({
+					piece: position[x][y],
+					rank: x,
+					file: y,
+				});
+		});
+	});
+	return enemyPieces;
+};
+
+let getKingPosition = (position, player) => {
+	let kingPos;
+	position.forEach((rank, x) => {
+		rank.forEach((file, y) => {
+			if (position[x][y].startsWith(player) && position[x][y].endsWith("k"))
+				kingPos = [x, y];
+		});
+	});
+	return kingPos;
+};
 export {
 	getRookMoves,
 	getKingMoves,
@@ -292,4 +414,6 @@ export {
 	getPawnCapture,
 	getCastlingMove,
 	getCastlingDir,
+	getEnemyPices,
+	getKingPosition,
 };

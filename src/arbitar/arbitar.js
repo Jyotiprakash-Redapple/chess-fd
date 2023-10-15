@@ -7,6 +7,8 @@ import {
 	getBishopMoves,
 	getPawnCapture,
 	getCastlingMove,
+	getEnemyPices,
+	getKingPosition,
 } from "./getMoves";
 
 import { isPawnMove, isNotPawnMove } from "./move";
@@ -49,7 +51,23 @@ let arbitar = {
 			];
 		}
 
-		return moves;
+		moves.forEach(([x, y]) => {
+			const positionAfterMove = this.checkAmove({
+				position,
+				piece,
+				rank,
+				file,
+				x,
+				y,
+			});
+
+			if (
+				!this.isPlayerChecked({ positionAfterMove, position, player: piece[0] })
+			) {
+				notInCheckMoves.push([x, y]);
+			}
+		});
+		return notInCheckMoves;
 	},
 
 	// check is pawn or
@@ -60,6 +78,36 @@ let arbitar = {
 		} else {
 			return isNotPawnMove({ position, piece, rank, file, x, y });
 		}
+	},
+
+	// check player check or not
+
+	isPlayerChecked: function ({ positionAfterMove, position, player }) {
+		const enemy = player.startsWith("w") ? "b" : "w";
+		const kingPos = getKingPosition(positionAfterMove, player);
+		const enemyPieces = getEnemyPices(positionAfterMove, enemy);
+
+		const enemyMoves = enemyPieces.reduce(
+			(acc, p) =>
+				(acc = [
+					...acc,
+					...(p.piece.endsWith("p")
+						? getPawnCapture({
+								position: positionAfterMove,
+								prevPosition: position,
+								...p,
+						  })
+						: this.getRegularMove({
+								position: positionAfterMove,
+								...p,
+						  })),
+				]),
+			[]
+		);
+
+		if (enemyMoves.some(([x, y]) => kingPos[0] === x && kingPos[1] === y))
+			return true;
+		else return false;
 	},
 };
 

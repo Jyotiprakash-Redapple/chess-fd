@@ -361,6 +361,20 @@ html::before {
 	left: 0;
 	top: 0;
 }
+.checked::after {
+	display: block;
+	position: absolute;
+	content: "";
+	background-color: red;
+	/* z-index: 1; */
+	border: 6px solid rgb(255, 247, 0);
+	width: calc(80px - 12px);
+	height: calc(80px - 12px);
+	border-radius: 50%;
+	left: 0;
+	top: 0;
+}
+
 .candidate_move {
 	width: 250px;
 	background-color: green;

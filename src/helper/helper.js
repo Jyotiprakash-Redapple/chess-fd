@@ -16,12 +16,12 @@ let createPosition = () => {
 	position[0][7] = "wr";
 
 	position[7][0] = "br";
-	// position[7][1] = "bn";
-	// position[7][2] = "bb";
-	// position[7][3] = "bq";
+	position[7][1] = "bn";
+	position[7][2] = "bb";
+	position[7][3] = "bq";
 	position[7][4] = "bk";
-	// position[7][5] = "bb";
-	// position[7][6] = "bn";
+	position[7][5] = "bb";
+	position[7][6] = "bn";
 	position[7][7] = "br";
 
 	return position;

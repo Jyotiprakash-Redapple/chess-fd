@@ -1,4 +1,4 @@
-import { actionTypes } from "./constant";
+import { actionTypes, initGame } from "./constant";
 let makeNewMove = ({ newPosition }) => {
 	return {
 		type: actionTypes.NEW_MOVE,
@@ -49,9 +49,23 @@ let closePromotionBox = () => {
 };
 
 let updateCastlingMove = (direction) => {
+	console.log(direction, "direction");
 	return {
 		type: actionTypes.CHECK_CASTEL,
 		payload: direction,
+	};
+};
+
+let dectactStalemet = () => {
+	return {
+		type: actionTypes.DECTACT_STALEMET,
+	};
+};
+
+let newGameStart = () => {
+	return {
+		type: actionTypes.NEW_GAME,
+		payload: initGame,
 	};
 };
 export {
@@ -63,4 +77,6 @@ export {
 	openPromotionBox,
 	closePromotionBox,
 	updateCastlingMove,
+	dectactStalemet,
+	newGameStart,
 };

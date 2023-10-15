@@ -1,6 +1,7 @@
 import { createPosition } from "../helper/helper";
 
 let gameStatus = {
+	stalemet: "game draw due to stalemet",
 	ongoing: "ongoing",
 	draw: "draw",
 	promoting: "promoting",
@@ -30,5 +31,7 @@ let actionTypes = {
 	OPEN_PROMOTION_BOX: "OPEN_PROMOTION_BOX",
 	CLOSE_PROMOTION_BOX: "CLOSE_PROMOTION_BOX",
 	CHECK_CASTEL: "CHECK_CASTEL",
+	DECTACT_STALEMET: "DECTACT_STALEMET",
+	NEW_GAME: "NEW_GAME",
 };
 export { initGame, actionTypes, gameStatus };

@@ -57,7 +57,19 @@ let reducer = (state, action) => {
 			return {
 				...state,
 				status: gameStatus.ongoing,
-				promotion: action.payload,
+			};
+		}
+
+		case actionTypes.DECTACT_STALEMET: {
+			return {
+				...state,
+				status: gameStatus.stalemet,
+			};
+		}
+
+		case actionTypes.NEW_GAME: {
+			return {
+				...action.payload,
 			};
 		}
 		default: {

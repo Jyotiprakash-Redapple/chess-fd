@@ -10,6 +10,7 @@ import {
 	clearPorn,
 	openPromotionBox,
 	updateCastlingMove,
+	dectactStalemet,
 } from "../../reducer/move";
 import { arbitar } from "../../arbitar/arbitar";
 import { getCastlingDir } from "../../arbitar/getMoves";
@@ -105,6 +106,9 @@ function pices() {
 			if (appState.candidateMove.find((m) => m[0] === x && m[1] === y)) {
 				// Em pasant move when current poition empty
 
+				const opponet = piece.startsWith("w") ? "b" : "w";
+				const castelDirection =
+					appState.castlingdir[`${piece.startsWith("w") ? "b" : "w"}`];
 				if ((piece === "wp" && x === 7) || (piece === "bp" && x === 0)) {
 					handelOpenPromotionBox({ rank, file, x, y });
 					return;
@@ -123,6 +127,10 @@ function pices() {
 				});
 
 				dispatch(makeNewMove({ newPosition }));
+
+				if (arbitar.isStalemate(newPosition, opponet, castelDirection)) {
+					dispatch(dectactStalemet());
+				}
 			}
 			dispatch(clearCandidates());
 			dispatch(clearPorn());

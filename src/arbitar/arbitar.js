@@ -109,6 +109,31 @@ let arbitar = {
 			return true;
 		else return false;
 	},
+
+	isStalemate: function (position, player, castleDirection) {
+		const isInCheck = this.isPlayerChecked({
+			positionAfterMove: position,
+			player,
+		});
+
+		if (isInCheck) return false;
+
+		const pieces = getEnemyPices(position, player);
+		const moves = pieces.reduce(
+			(acc, p) =>
+				(acc = [
+					...acc,
+					...this.getValidMoves({
+						position,
+						castleDirection,
+						...p,
+					}),
+				]),
+			[]
+		);
+
+		return !isInCheck && moves.length === 0;
+	},
 };
 
 export { arbitar };

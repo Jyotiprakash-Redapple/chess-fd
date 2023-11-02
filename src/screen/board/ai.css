@@ -137,3 +137,30 @@ nav li {
 	margin: 0;
 	padding: 0;
 }
+
+@media (min-width: 992px) and (max-width: 1199px) {
+	.board-b72b1{width: 500px;}
+	.board-b72b1 .square-55d63{width: 70px !important; height: 70px !important;}
+	.board-b72b1 .square-55d63 img{width: 70px !important; height: 70px !important;}
+}
+@media (min-width: 748px) and (max-width: 991px) {
+	.board-b72b1{width: 470px !important;}
+	.board-b72b1 .square-55d63{width: 50px !important; height: 50px !important;}
+	.board-b72b1 .square-55d63 img{width: 50px !important; height: 50px !important;}
+}
+
+@media only screen and (max-width: 600px) {
+	.board_cont_inn{flex-wrap: wrap;}
+    .ai_sidebar_suggestion{width: 89%; height: auto;}
+	.ai_chess_board{flex: none; width: 100%;}
+	.ai_sidebar_menu {width: 100%;position: relative;top: -86px;left: 1px; height: 100%;}
+	.ai_sidebar_suggestion .upper_txt{margin-bottom: 0px !important;}
+    .ai_sidebar_suggestion .upper_txt p{margin: 0px !important; font-size: 13px;}
+	.mar-top{margin-top: 2px !important;}
+	.ai_sidebar_suggestion .upper_txt h2{margin-bottom: 2px; font-size: 14px;}
+	.ai_chess_board{margin-top: 8px !important;}
+	.main-menu li{margin-top: 8px;}
+	.progress{height: 8px !important;}
+	#accordion .fa{height: 20px !important;}
+	#accordion .card-header{padding: 0px !important;}
+}

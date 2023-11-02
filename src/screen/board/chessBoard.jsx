@@ -28,7 +28,7 @@ function chessBoard() {
 		<div className='board_container'>
 			<div className='sidebar_suggestion'>
 				{" "}
-				<div class='row my-3 text-align-center'>
+				<div class='row my-3 text-align-center upper_txt mar-top'>
 					<div class='col-md-12'>
 						<h2>Advantage</h2>
 						<p>
@@ -47,7 +47,7 @@ function chessBoard() {
 						</div>
 					</div>
 				</div>
-				<div class='row my-3 text-align-center'>
+				<div class='row my-3 text-align-center upper_txt mar-top'>
 					<div class='col-md-12'>
 						<h2>Status</h2>
 						<p>

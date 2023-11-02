@@ -684,7 +684,7 @@ function AIboard() {
 	return (
 		<div className='board_container'>
 			{" "}
-			<div
+			<div className="board_cont_inn"
 				style={{
 					width: "100%",
 					height: "100%",
@@ -693,7 +693,7 @@ function AIboard() {
 				}}>
 				<div className='ai_sidebar_suggestion'>
 					{" "}
-					<div class='row my-3 text-align-center'>
+					<div class='row text-align-center upper_txt mar-top'>
 						<div class='col-md-12'>
 							<h2>Advantage</h2>
 							<p>
@@ -712,7 +712,7 @@ function AIboard() {
 							</div>
 						</div>
 					</div>
-					<div class='row my-3 text-align-center'>
+					<div class='row text-align-center upper_txt mar-top'>
 						<div class='col-md-12'>
 							<h2>Status</h2>
 							<p>
@@ -722,15 +722,15 @@ function AIboard() {
 					</div>
 				</div>
 				<div className='ai_chess_board'>
-					<div class='col-md-6'>
+					<div class='col-md-6 col-sm-12'>
 						<div id='myBoard'></div>
 						<div class='row my-3 text-align-center'>
-							<div class='col-md-6 my-2'>
+							<div class='col-md-6 my-2 col-6'>
 								<button class='btn btn-danger' id='undoBtn'>
 									Undo
 								</button>
 							</div>
-							<div class='col-md-6 my-2'>
+							<div class='col-md-6 my-2 col-6'>
 								<button class='btn btn-success' id='redoBtn'>
 									Redo
 								</button>

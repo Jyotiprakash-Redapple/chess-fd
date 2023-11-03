@@ -8,10 +8,28 @@ import Movelist from "../../component/controls/movelist";
 import userAvatar from "../../assets/app/search_avatar/avatar1.jpg";
 import opponetAvatar from "../../assets/app/search_avatar/avatar2.jpg";
 import ProfileBorder from "../../assets/app/profile_border.png";
+import { gameStatus } from "../../reducer/constant";
+import { arbitar } from "../../arbitar/arbitar";
 import Timer from "../../assets/app/lottie/Timer.gif";
 function chessBoard() {
 	const { appState, dispatch } = useAppContext();
+	const currentPosition = appState.position[appState.position.length - 1];
 	const navigate = useNavigate();
+
+	/**
+	 * check every time king check or not by self invoking function
+	 */
+	const isChecked = (() => {
+		const isChecked = arbitar.isPlayerChecked({
+			positionAfterMove: currentPosition,
+			player: appState.turn,
+		});
+
+		if (isChecked) {
+			return true;
+		}
+		return null;
+	})();
 
 	useEffect(() => {
 		// Check if the socket is not connected.
@@ -22,7 +40,7 @@ function chessBoard() {
 		} else {
 			appState.socket.getUpdateDetailsFromServer(dispatch);
 		}
-	}, [appState.socket, dispatch, navigate]);
+	}, []);
 
 	return (
 		<div className='board_container'>
@@ -51,7 +69,13 @@ function chessBoard() {
 					<div class='col-md-12'>
 						<h2>Status</h2>
 						<p>
-							<span id='status'>{appState.status}</span>
+							<span id='status'>
+								{isChecked
+									? gameStatus[`${appState.turn}_check`]
+									: appState.status === gameStatus.ongoing
+									? "No check, checkmate, or draw "
+									: appState.status}
+							</span>
 						</p>
 					</div>
 				</div>
@@ -113,7 +137,6 @@ function chessBoard() {
 								<div className='user_kill'>
 									<div className='pawn_pices'>
 										{appState.kill_pices.map((el, idx) => {
-											console.log(el, "el");
 											if (el) {
 												if (el[0] === appState.opponent) {
 													if (el[1] === "p") {

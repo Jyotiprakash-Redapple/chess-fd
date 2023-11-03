@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Rank from "./bitter/rank";
 import File from "./bitter/file";
 import Pieces from "../pieces/pieces";
@@ -8,7 +8,6 @@ import { useAppContext } from "../../context/Provider";
 import Pupup from "../../component/promotion/popupbox";
 import { arbitar } from "../../arbitar/arbitar";
 import { getKingPosition } from "../../arbitar/getMoves";
-
 function Board() {
 	const { appState } = useAppContext();
 

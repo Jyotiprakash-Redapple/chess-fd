@@ -8,6 +8,8 @@ let gameStatus = {
 	promoting: "promoting",
 	white: "white wins",
 	black: "black wins",
+	w_check: "Oops white in check",
+	b_check: "Oops Black in check",
 };
 let initGame = {
 	socket: null,

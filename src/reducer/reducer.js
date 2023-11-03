@@ -173,6 +173,7 @@ let reducer = (state, action) => {
 				status: gameStatus.insufficiant,
 			};
 		}
+
 		case actionTypes.WIN: {
 			state.socket.onUpdateMove({
 				status: action.payload === "w" ? gameStatus.white : gameStatus.black,

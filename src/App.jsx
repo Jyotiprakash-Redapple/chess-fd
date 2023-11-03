@@ -4,11 +4,12 @@ import Board from "../src/screen/board/chessBoard";
 import AIboard from "./screen/board/AIboard";
 import Lunch from "./screen/game/lunch";
 import Home from "../src/screen/home/home";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Client from "./client/client";
 import { newSocketConnect } from "./reducer/move";
 import { useAppContext } from "../src/context/Provider";
 import Loading from "./assets/app/lottie/loading.json";
+import Login from "./screen/auth/login/Login";
 function Fallback() {
 	return (
 		<div
@@ -85,6 +86,7 @@ function AuthGaurd() {
 		</>
 	);
 }
+
 function App() {
 	return (
 		<div className='app'>

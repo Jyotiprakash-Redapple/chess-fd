@@ -80,9 +80,12 @@ function pices() {
 				if (appState.candidateMove.find((m) => m[0] === x && m[1] === y)) {
 					// Em pasant move when current poition empty
 					const opponet = piece.startsWith("w") ? "b" : "w";
+
+					// castelDirection
 					const castelDirection =
 						appState.castlingdir[`${piece.startsWith("w") ? "b" : "w"}`];
 
+					// Open promotion box
 					if (
 						(piece === "wp" && x === 7 && appState.opponent === "b") ||
 						(piece === "bp" && x === 0 && appState.opponent === "w")
@@ -130,13 +133,9 @@ function pices() {
 
 					if (arbitar.insufficientMaterial(newPosition)) {
 						dispatch(dectactInSufficiantMatarial());
-					} else if (
-						arbitar.isStalemate(newPosition, opponet, castelDirection)
-					) {
+					} else if (arbitar.isStalemate(newPosition, opponet, castelDirection)) {
 						dispatch(dectactStalemet());
-					} else if (
-						arbitar.isCheckMate(newPosition, opponet, castelDirection)
-					) {
+					} else if (arbitar.isCheckMate(newPosition, opponet, castelDirection)) {
 						dispatch(dectactCheckmate(piece[0]));
 					}
 				}
@@ -172,7 +171,7 @@ function pices() {
 	return (
 		<>
 			<div
-				className="pieces"
+				className='pieces'
 				ref={picesRef}
 				onClick={handelDropClick}
 				onDrop={handelDrop}

@@ -42,6 +42,7 @@ function AIboard() {
 		var config = {
 			draggable: true,
 			position: "start",
+
 			onDragStart: onDragStart,
 			onDrop: onDrop,
 			onMouseoutSquare: onMouseoutSquare,
@@ -527,6 +528,7 @@ function AIboard() {
 	}
 
 	$("#undoBtn").on("click", function () {
+		console.log("function call ");
 		if (game.history().length >= 2) {
 			$board.find("." + squareClass).removeClass("highlight-white");
 			$board.find("." + squareClass).removeClass("highlight-black");
@@ -684,7 +686,8 @@ function AIboard() {
 	return (
 		<div className='board_container'>
 			{" "}
-			<div className="board_cont_inn"
+			<div
+				className='board_cont_inn'
 				style={{
 					width: "100%",
 					height: "100%",

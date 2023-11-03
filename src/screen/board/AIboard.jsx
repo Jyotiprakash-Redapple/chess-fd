@@ -481,38 +481,72 @@ function AIboard() {
 	/*
 	 * Event listeners for various buttons.
 	 */
-	$("#ruyLopezBtn").on("click", function () {
+	const handelruLopezBtn = () => {
 		reset();
 		game.load("r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 0 1");
 		board.position(game.fen());
 		window.setTimeout(function () {
 			makeBestMove("b");
 		}, 250);
-	});
-	$("#italianGameBtn").on("click", function () {
+	};
+	// $("#ruyLopezBtn").on("click", function () {
+	// 	reset();
+	// 	game.load("r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 0 1");
+	// 	board.position(game.fen());
+	// 	window.setTimeout(function () {
+	// 		makeBestMove("b");
+	// 	}, 250);
+	// });
+
+	const handelItalianGameBtn = () => {
 		reset();
 		game.load("r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 0 1");
 		board.position(game.fen());
 		window.setTimeout(function () {
 			makeBestMove("b");
 		}, 250);
-	});
-	$("#sicilianDefenseBtn").on("click", function () {
+	};
+	// $("#italianGameBtn").on("click", function () {
+	// 	reset();
+	// 	game.load("r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 0 1");
+	// 	board.position(game.fen());
+	// 	window.setTimeout(function () {
+	// 		makeBestMove("b");
+	// 	}, 250);
+	// });
+
+	const handelSicilianDefenseBtn = () => {
 		reset();
 		game.load("rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1");
 		board.position(game.fen());
-	});
-	$("#startBtn").on("click", function () {
-		reset();
-	});
+	};
+	// $("#sicilianDefenseBtn").on("click", function () {
+	// 	reset();
+	// 	game.load("rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1");
+	// 	board.position(game.fen());
+	// });
 
-	$("#compVsCompBtn").on("click", function () {
+	const handelStartBtn = () => {
+		reset();
+	};
+	// $("#startBtn").on("click", function () {
+	// 	reset();
+	// });
+	const handelComVsComBtn = () => {
 		reset();
 		compVsComp("w");
-	});
-	$("#resetBtn").on("click", function () {
+	};
+	// $("#compVsCompBtn").on("click", function () {
+	// 	reset();
+	// 	compVsComp("w");
+	// });
+
+	const handelResetBtn = () => {
 		reset();
-	});
+	};
+	// $("#resetBtn").on("click", function () {
+	// 	reset();
+	// });
 
 	var undo_stack = [];
 
@@ -527,8 +561,7 @@ function AIboard() {
 		board.position(game.fen());
 	}
 
-	$("#undoBtn").on("click", function () {
-		console.log("function call ");
+	const handelUndoBtn = () => {
 		if (game.history().length >= 2) {
 			$board.find("." + squareClass).removeClass("highlight-white");
 			$board.find("." + squareClass).removeClass("highlight-black");
@@ -545,14 +578,32 @@ function AIboard() {
 		} else {
 			alert("Nothing to undo.");
 		}
-	});
+	};
+	// $("#undoBtn").on("click", function () {
+	// 	if (game.history().length >= 2) {
+	// 		$board.find("." + squareClass).removeClass("highlight-white");
+	// 		$board.find("." + squareClass).removeClass("highlight-black");
+	// 		$board.find("." + squareClass).removeClass("highlight-hint");
+
+	// 		// Undo twice: Opponent's latest move, followed by player's latest move
+	// 		undo();
+	// 		window.setTimeout(function () {
+	// 			undo();
+	// 			window.setTimeout(function () {
+	// 				showHint();
+	// 			}, 250);
+	// 		}, 250);
+	// 	} else {
+	// 		alert("Nothing to undo.");
+	// 	}
+	// });
 
 	function redo() {
 		game.move(undo_stack.pop());
 		board.position(game.fen());
 	}
 
-	$("#redoBtn").on("click", function () {
+	const handelRedoBtn = () => {
 		if (undo_stack.length >= 2) {
 			// Redo twice: Player's last move, followed by opponent's last move
 			redo();
@@ -565,7 +616,21 @@ function AIboard() {
 		} else {
 			alert("Nothing to redo.");
 		}
-	});
+	};
+	// $("#redoBtn").on("click", function () {
+	// 	if (undo_stack.length >= 2) {
+	// 		// Redo twice: Player's last move, followed by opponent's last move
+	// 		redo();
+	// 		window.setTimeout(function () {
+	// 			redo();
+	// 			window.setTimeout(function () {
+	// 				showHint();
+	// 			}, 250);
+	// 		}, 250);
+	// 	} else {
+	// 		alert("Nothing to redo.");
+	// 	}
+	// });
 
 	$("#showHint").change(function () {
 		window.setTimeout(showHint, 250);
@@ -729,12 +794,12 @@ function AIboard() {
 						<div id='myBoard'></div>
 						<div class='row my-3 text-align-center'>
 							<div class='col-md-6 my-2 col-6'>
-								<button class='btn btn-danger' id='undoBtn'>
+								<button class='btn btn-danger' id='undoBtn' onClick={handelUndoBtn}>
 									Undo
 								</button>
 							</div>
 							<div class='col-md-6 my-2 col-6'>
-								<button class='btn btn-success' id='redoBtn'>
+								<button class='btn btn-success' id='redoBtn' onClick={handelRedoBtn}>
 									Redo
 								</button>
 							</div>
@@ -834,24 +899,30 @@ function AIboard() {
 											<div class='card-body'>
 												<div class='row my-3 text-align-center'>
 													<div class='col-md-6 my-2'>
-														<button class='btn btn-primary' id='ruyLopezBtn'>
+														<button class='btn btn-primary' id='ruyLopezBtn' onClick={handelruLopezBtn}>
 															Ruy Lopez
 														</button>
 													</div>
 													<div class='col-md-6 my-2'>
-														<button class='btn btn-primary' id='italianGameBtn'>
+														<button
+															class='btn btn-primary'
+															id='italianGameBtn'
+															onClick={handelItalianGameBtn}>
 															Italian Game
 														</button>
 													</div>
 												</div>
 												<div class='row my-3 text-align-center'>
 													<div class='col-md-6 my-2'>
-														<button class='btn btn-primary' id='sicilianDefenseBtn'>
+														<button
+															class='btn btn-primary'
+															id='sicilianDefenseBtn'
+															onClick={handelSicilianDefenseBtn}>
 															Sicilian Defense
 														</button>
 													</div>
 													<div class='col-md-6 my-2'>
-														<button class='btn btn-primary' id='startBtn'>
+														<button class='btn btn-primary' id='startBtn' onClick={handelStartBtn}>
 															Start Position
 														</button>
 													</div>
@@ -885,12 +956,12 @@ function AIboard() {
 											<div class='card-body'>
 												<div class='row text-align-center'>
 													<div class='col-md-6 my-2'>
-														<button class='btn btn-success' id='compVsCompBtn'>
+														<button class='btn btn-success' id='compVsCompBtn' onClick={handelComVsComBtn}>
 															Start Game
 														</button>
 													</div>
 													<div class='col-md-6 my-2'>
-														<button class='btn btn-danger' id='resetBtn'>
+														<button class='btn btn-danger' id='resetBtn' onClick={handelResetBtn}>
 															Stop and Reset
 														</button>
 													</div>

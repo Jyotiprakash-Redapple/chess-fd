@@ -41,6 +41,22 @@ function chessBoard() {
 			appState.socket.getUpdateDetailsFromServer(dispatch);
 		}
 	}, []);
+	(function updateAdvantage() {
+		if (appState.advantage > 0) {
+			$("#advantageColor").text("Black");
+			$("#advantageNumber").text(appState.advantage);
+		} else if (appState.advantage < 0) {
+			$("#advantageColor").text("White");
+			$("#advantageNumber").text(-appState.advantage);
+		} else {
+			$("#advantageColor").text("Neither side");
+			$("#advantageNumber").text(appState.advantage);
+		}
+		$("#advantageBar").attr({
+			"aria-valuenow": `${-appState.advantage}`,
+			style: `width: ${((-appState.advantage + 2000) / 4000) * 100}%`,
+		});
+	})();
 
 	return (
 		<div className='board_container'>

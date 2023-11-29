@@ -18,13 +18,13 @@ function satalement() {
 	const isWin = status.endsWith("wins");
 
 	return (
-		<div className="popup--inner popup--inner__center">
+		<div className='popup--inner popup--inner__center'>
 			<h1>{isWin ? status : "Draw"}</h1>
 			<p>{!isWin && status}</p>
 			<div className={`${status}`} />
-			{/* <button className='new_game_btn' onClick={newGame}>
+			<button className='new_game_btn' onClick={newGame}>
 				New Game
-			</button> */}
+			</button>
 		</div>
 	);
 }

@@ -76,4 +76,5 @@ appConfig.socket = {
 	},
 };
 appConfig.localStorageAuth = "cheesio_auth";
+appConfig.mode = "offline";
 export default appConfig;

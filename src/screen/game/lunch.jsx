@@ -4,10 +4,10 @@ import { CRow, CCol, CCard } from "@coreui/react";
 
 import appConfig from "../../appconfig/appconfig";
 import Search from "./search";
-
+import Countdown from "./countdown";
 function searching() {
 	return (
-		<div className='search_container'>
+		<div className="search_container">
 			<CRow>
 				<CCol>
 					<CCard
@@ -17,27 +17,34 @@ function searching() {
 							backgroundColor: "transparent",
 							border: "none",
 						}}>
-						<div className='slot_container'>
-							<div className='column_auther'>
-								<div className='avatar_auther_column'>
-									<div className='avatar_auther'>
+						<div className="slot_container">
+							<div className="slot_timer">
+								<Countdown />
+							</div>
+							<div className="column_auther">
+								<div className="avatar_auther_column">
+									<div className="avatar_auther">
 										<img
 											src={
-												appConfig.avatarArray[Math.floor(Math.random() * appConfig.avatarArray.length)]
-													.avatar
+												appConfig.avatarArray[
+													Math.floor(
+														Math.random() * appConfig.avatarArray.length
+													)
+												].avatar
 											}
 											alt={``}
 										/>
 									</div>
-									<div className='auther_name'>
+									<div className="auther_name">
 										{
-											appConfig.avatarArray[Math.floor(Math.random() * appConfig.avatarArray.length)]
-												.name
+											appConfig.avatarArray[
+												Math.floor(Math.random() * appConfig.avatarArray.length)
+											].name
 										}
 									</div>
 								</div>
 							</div>
-							<div className='column_opponent'>
+							<div className="column_opponent">
 								<Search />
 							</div>
 						</div>

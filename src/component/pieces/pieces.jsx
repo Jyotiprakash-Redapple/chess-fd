@@ -13,9 +13,10 @@ import {
 	dectactInSufficiantMatarial,
 	dectactCheckmate,
 	saveKillPices,
+	updateAdvantage,
 } from "../../reducer/move";
 import { arbitar } from "../../arbitar/arbitar";
-import { getCastlingDir } from "../../arbitar/getMoves";
+import { getCastlingDir, evaluateBoard } from "../../arbitar/getMoves";
 function pices() {
 	const { appState, dispatch } = useAppContext();
 	const currentPosition = appState.position[appState.position.length - 1];
@@ -124,13 +125,30 @@ function pices() {
 							})
 						);
 					}
+
+					const advantages = evaluateBoard({
+						status: appState.status,
+						piece: piece[1],
+						prevSum: appState.advantage,
+						opponent: appState.opponent,
+						from_: `${String.fromCharCode(97 + Number(file))}${Number(rank) + 1}`,
+						to_: `${String.fromCharCode(97 + y)}${x + 1}`,
+						x,
+						y,
+						prevPosition: appState.position[appState.position.length - 1],
+						promotion: null,
+						opponentColor: appState.opponent,
+						moveColor: piece[0],
+						newMove,
+					});
+					console.log(advantages, "advantages");
+					dispatch(updateAdvantage(advantages));
 					dispatch(
 						makeNewMove({
 							newPosition,
 							newMove,
 						})
 					);
-
 					if (arbitar.insufficientMaterial(newPosition)) {
 						dispatch(dectactInSufficiantMatarial());
 					} else if (arbitar.isStalemate(newPosition, opponet, castelDirection)) {

@@ -28,9 +28,26 @@ let reducer = (state, action) => {
 
 			if (board.turn !== state.opponent) {
 				if (board?.status) {
+					if (board.status === gameStatus.newGameInit) {
+						return {
+							...state,
+							opponent: state.opponent === "w" ? "b" : "w",
+							advantage: 0,
+							position: [createPosition()],
+							status: gameStatus.ongoing,
+							turn: "w",
+							moveList: [], // array
+							kill_pices: [],
+							castlingdir: {
+								w: "both",
+								b: "both",
+							},
+						};
+					}
 					return {
 						...state,
 						status: board.status,
+						advantage: board.advantage,
 					};
 				} else {
 					const newposition = [...state.position, board.position];
@@ -38,6 +55,7 @@ let reducer = (state, action) => {
 					return {
 						...state,
 						position: newposition,
+						advantage: board.advantage,
 						turn: board.turn,
 						moveList: [...board.moveList],
 						kill_pices: [...board.kill_pices],
@@ -74,11 +92,23 @@ let reducer = (state, action) => {
 			const newposition = [...state.position, action.payload.newPosition];
 
 			state.socket.onUpdateMove({
-				position: action.payload.newPosition,
-				turn,
-				moveList: newMoveList,
-				kill_pices: state.kill_pices,
-				castlingDirection: state.castlingdir,
+				board: {
+					position: action.payload.newPosition,
+					turn,
+					moveList: newMoveList,
+					advantage: state.advantage,
+					kill_pices: state.kill_pices,
+					castlingDirection: state.castlingdir,
+				},
+				game_state: {
+					status: state.status,
+					advantage:
+						state.advantage === 0
+							? "Neither side"
+							: state.advantage > 0
+							? "Black"
+							: "White",
+				},
 			});
 			return {
 				...state,
@@ -144,7 +174,19 @@ let reducer = (state, action) => {
 
 		case actionTypes.DECTACT_STALEMET: {
 			state.socket.onUpdateMove({
-				status: gameStatus.stalemet,
+				board: {
+					status: gameStatus.stalemet,
+					advantage: state.advantage,
+				},
+				game_state: {
+					status: state.status,
+					advantage:
+						state.advantage === 0
+							? "Neither side"
+							: state.advantage > 0
+							? "Black"
+							: "White",
+				},
 			});
 			state.socket.onUpdateWin({
 				player: { id: state.pl.id, score: 0.5, colour: state.pl.colour },
@@ -160,7 +202,19 @@ let reducer = (state, action) => {
 
 		case actionTypes.DECTACT_INSUFFICIANT_MATARIAL: {
 			state.socket.onUpdateMove({
-				status: gameStatus.insufficiant,
+				board: {
+					status: gameStatus.insufficiant,
+					advantage: state.advantage,
+				},
+				game_state: {
+					status: state.status,
+					advantage:
+						state.advantage === 0
+							? "Neither side"
+							: state.advantage > 0
+							? "Black"
+							: "White",
+				},
 			});
 			state.socket.onUpdateWin({
 				player: { id: state.pl.id, score: 0.5, colour: state.pl.colour },
@@ -176,7 +230,19 @@ let reducer = (state, action) => {
 
 		case actionTypes.WIN: {
 			state.socket.onUpdateMove({
-				status: action.payload === "w" ? gameStatus.white : gameStatus.black,
+				board: {
+					status: action.payload === "w" ? gameStatus.white : gameStatus.black,
+					advantage: state.advantage,
+				},
+				game_state: {
+					status: state.status,
+					advantage:
+						state.advantage === 0
+							? "Neither side"
+							: state.advantage > 0
+							? "Black"
+							: "White",
+				},
 			});
 			state.socket.onUpdateWin({
 				player: {
@@ -208,10 +274,50 @@ let reducer = (state, action) => {
 				kill_pices: [...state.kill_pices, enemy],
 			};
 		}
+		case actionTypes.UPDATE_ADVANTAGE: {
+			return {
+				...state,
+				advantage: action.payload,
+			};
+		}
 
 		case actionTypes.NEW_GAME: {
+			state.socket.onUpdateMove({
+				board: {
+					advantage: 0,
+					position: [createPosition()],
+					status: gameStatus.newGameInit,
+					turn: "w",
+					moveList: [], // array
+					kill_pices: [],
+					castlingdir: {
+						w: "both",
+						b: "both",
+					},
+				},
+				game_state: {
+					status: state.status,
+					advantage:
+						state.advantage === 0
+							? "Neither side"
+							: state.advantage > 0
+							? "Black"
+							: "White",
+				},
+			});
 			return {
-				...action.payload,
+				...state,
+				opponent: state.opponent === "w" ? "b" : "w",
+				advantage: 0,
+				position: [createPosition()],
+				status: gameStatus.ongoing,
+				turn: "w",
+				moveList: [], // array
+				kill_pices: [],
+				castlingdir: {
+					w: "both",
+					b: "both",
+				},
 			};
 		}
 

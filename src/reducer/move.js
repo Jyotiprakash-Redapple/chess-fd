@@ -125,7 +125,9 @@ let dectactCheckmate = (winner) => {
 let newGameStart = () => {
 	return {
 		type: actionTypes.NEW_GAME,
-		payload: initGame,
+		payload: {
+			initGame,
+		},
 	};
 };
 
@@ -171,6 +173,16 @@ let updateBoard = ({ arg }) => {
 	};
 };
 
+/**\
+ * update advantage
+ */
+
+let updateAdvantage = (arg) => {
+	return {
+		type: actionTypes.UPDATE_ADVANTAGE,
+		payload: arg,
+	};
+};
 export {
 	makeNewMove,
 	makeCandidateMoves,
@@ -189,4 +201,5 @@ export {
 	newSocketConnect,
 	gameInit,
 	updateBoard,
+	updateAdvantage,
 };

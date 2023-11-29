@@ -10,10 +10,12 @@ let gameStatus = {
 	black: "black wins",
 	w_check: "Oops white in check",
 	b_check: "Oops Black in check",
+	newGameInit: "new Game init by user ",
 };
 let initGame = {
 	socket: null,
 	opponent: "", // string
+	advantage: 0,
 	position: [], // array
 	turn: "", // string
 	candidateMove: [], // string
@@ -50,6 +52,7 @@ let actionTypes = {
 	SAVE_KILL_PICES: "SAVE_KILL_PICES",
 	NEW_GAME: "NEW_GAME",
 
+	UPDATE_ADVANTAGE: "UPDATE_ADVANTAGE",
 	//socket
 
 	NEW_SOCKET_CONNECTION: "NEW_SOCKET_CONNECTION",

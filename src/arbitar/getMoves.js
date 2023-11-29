@@ -1,5 +1,6 @@
 import { arbitar } from "./arbitar";
-
+import { gameStatus } from "../reducer/constant";
+import { weights, pstOpponent, pstSelf } from "../helper/helper";
 /**
  * rook move rule
  */
@@ -413,6 +414,110 @@ let getKingPosition = (position, player) => {
 	});
 	return kingPos;
 };
+
+let evaluateBoard = ({
+	status,
+	piece,
+	prevSum,
+	opponentColor,
+	moveColor,
+	from_,
+	to_,
+	x,
+	y,
+	prevPosition,
+	promotion,
+	newMove,
+}) => {
+	if (status === gameStatus.white || status === gameStatus.black) {
+		// Opponent is in checkmate (good for us)
+		if (moveColor === opponentColor) {
+			return 10 ** 10;
+		}
+		// Our king's in checkmate (bad for us)
+		else {
+			return -(10 ** 10);
+		}
+	}
+
+	if (status === gameStatus.insufficiant || status === gameStatus.stalemet) {
+		return 0;
+	}
+
+	if (status === gameStatus.b_check || status === gameStatus.w_check) {
+		// Opponent is in check (good for us)
+		if (moveColor === opponentColor) {
+			prevSum += 50;
+		}
+		// Our king's in check (bad for us)
+		else {
+			prevSum -= 50;
+		}
+	}
+
+	var from = [8 - parseInt(from_[1]), from_.charCodeAt(0) - "a".charCodeAt(0)];
+	var to = [8 - parseInt(to_[1]), to_.charCodeAt(0) - "a".charCodeAt(0)];
+
+	// Change endgame behavior for kings
+
+	if (prevSum < -1500) {
+		if (piece === "k") {
+			piece = "k_e";
+		}
+		// Kings can never be captured
+		// else if (move.captured === 'k') {
+		//   move.captured = 'k_e';
+		// }
+	}
+
+	if (newMove.includes("x")) {
+		// Opponent piece was captured (good for us)
+		let capturePices = prevPosition[x][y] || null;
+
+		console.log(capturePices, "capture picves");
+		if (capturePices) {
+			if (moveColor === opponentColor) {
+				prevSum +=
+					weights[capturePices[1]] +
+					pstOpponent[opponentColor][capturePices[1]][to[0]][to[1]];
+			}
+			// Our piece was captured (bad for us)
+			else {
+				prevSum -=
+					weights[capturePices[1]] +
+					pstSelf[opponentColor][capturePices[1]][to[0]][to[1]];
+			}
+		}
+	}
+
+	if (piece === "p") {
+		// NOTE: promote to queen for simplicity
+
+		if (promotion) {
+			if (opponentColor === moveColor) {
+				// Our piece was promoted (good for us)
+				prevSum -= weights[piece] + pstSelf[moveColor][piece][from[0]][from[1]];
+				prevSum += weights[promotion] + pstSelf[moveColor][promotion][to[0]][to[1]];
+			}
+			// Opponent piece was promoted (bad for us)
+			else {
+				prevSum += weights[piece] + pstSelf[moveColor][piece][from[0]][from[1]];
+				prevSum -= weights[promotion] + pstSelf[moveColor][promotion][to[0]][to[1]];
+			}
+		}
+	} else {
+		// The moved piece still exists on the updated board, so we only need to update the position value
+		if (moveColor !== opponentColor) {
+			prevSum += pstSelf[moveColor][piece][from[0]][from[1]];
+			prevSum -= pstSelf[moveColor][piece][to[0]][to[1]];
+		} else {
+			prevSum -= pstSelf[moveColor][piece][from[0]][from[1]];
+			prevSum += pstSelf[moveColor][piece][to[0]][to[1]];
+		}
+	}
+
+	return prevSum;
+};
 export {
 	getRookMoves,
 	getKingMoves,
@@ -425,4 +530,5 @@ export {
 	getCastlingDir,
 	getEnemyPices,
 	getKingPosition,
+	evaluateBoard,
 };

@@ -5,7 +5,7 @@ class Client {
 		this.gameSceneRefence = gameSceneInstance;
 		this.urlParams = new URLSearchParams(window.location.search);
 		this.token = this.urlParams.get("auth_token");
-		this.baseUrl = "http://staging.redappletech.com:5002/chessio";
+		this.baseUrl = "http://16.163.81.210:5003/chessio";
 		this.socket = io(this.baseUrl, {
 			query: {
 				auth_token: this.token,
@@ -45,15 +45,20 @@ class Client {
 		});
 	}
 
-	onUpdateMove(board) {
-		this.socket.emit("update-move", { board });
+	onUpdateMove(cur_game) {
+		console.log("current game move", cur_game);
+		this.socket.emit("update-move", cur_game);
 	}
 	onUpdateWin(data) {
-		console.log("resukt", data);
+		console.log("resultt", data);
 		this.socket.emit("update-scrore", data);
 	}
 	onRendomMatch() {
 		this.socket.emit("queue-join");
+	}
+	onQueueLeave() {
+		console.log("queue leave");
+		this.socket.emit("queue-leave");
 	}
 
 	// ListenCurrentState() {

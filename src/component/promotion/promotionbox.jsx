@@ -8,9 +8,11 @@ import {
 	dectactCheckmate,
 	dectactInSufficiantMatarial,
 	dectactStalemet,
+	updateAdvantage,
 } from "../../reducer/move";
 import { arbitar } from "../../arbitar/arbitar";
 import { copyPosition, getNewMoveNotation } from "../../helper/helper";
+import { evaluateBoard } from "../../arbitar/getMoves";
 function promot() {
 	const options = ["q", "r", "b", "n"];
 
@@ -46,47 +48,72 @@ function promot() {
 	};
 
 	const handelClick = (option) => {
-		dispatch(closePromotionBox());
-		const opponet = appState.promotion_square_info.x === 7 ? "b" : "w";
-		const castelDirection =
-			appState.castlingdir[`${appState.promotion_square_info.x === 7 ? "b" : "w"}`];
-		const newPosition = copyPosition(
-			appState.position[appState.position.length - 1]
-		);
-		newPosition[appState.promotion_square_info.rank][
-			appState.promotion_square_info.file
-		] = "";
-		newPosition[appState.promotion_square_info.x][
-			appState.promotion_square_info.y
-		] = color + option;
+		try {
+			dispatch(closePromotionBox());
+			const opponet = appState.promotion_square_info.x === 7 ? "b" : "w";
+			const castelDirection =
+				appState.castlingdir[`${appState.promotion_square_info.x === 7 ? "b" : "w"}`];
+			const newPosition = copyPosition(
+				appState.position[appState.position.length - 1]
+			);
+			newPosition[appState.promotion_square_info.rank][
+				appState.promotion_square_info.file
+			] = "";
+			newPosition[appState.promotion_square_info.x][
+				appState.promotion_square_info.y
+			] = color + option;
 
-		/**
-		 * new move notation when promot
-		 */
-		const newMove = getNewMoveNotation({
-			piece: color + option,
-			rank: appState.promotion_square_info.rank,
-			file: appState.promotion_square_info.file,
-			x: appState.promotion_square_info.x,
-			y: appState.promotion_square_info.y,
-			position: newPosition,
-		});
-		dispatch(
-			makeNewMove({
-				newPosition,
+			/**
+			 * new move notation when promot
+			 */
+			const newMove = getNewMoveNotation({
+				piece: color + option,
+				rank: appState.promotion_square_info.rank,
+				file: appState.promotion_square_info.file,
+				x: appState.promotion_square_info.x,
+				y: appState.promotion_square_info.y,
+				position: newPosition,
+			});
+			dispatch(
+				makeNewMove({
+					newPosition,
+					newMove,
+				})
+			);
+
+			const advantages = evaluateBoard({
+				status: appState.status,
+				piece: option,
+				prevSum: appState.advantage,
+				opponent: appState.opponent,
+				from_: `${String.fromCharCode(
+					97 + Number(appState.promotion_square_info.file)
+				)}${Number(appState.promotion_square_info.rank + 1)}`,
+				to_: `${String.fromCharCode(
+					97 + Number(appState.promotion_square_info.y)
+				)}${Number(appState.promotion_square_info.x + 1)}`,
+				x: Number(appState.promotion_square_info.x),
+				y: Number(appState.promotion_square_info.y),
+				prevPosition: appState.position[appState.position.length - 1],
+				promotion: option,
+				opponentColor: appState.opponent,
+				moveColor: color,
 				newMove,
-			})
-		);
-
-		dispatch(clearCandidates());
-		if (arbitar.insufficientMaterial(newPosition)) {
-			dispatch(dectactInSufficiantMatarial());
-		} else if (arbitar.isStalemate(newPosition, opponet, castelDirection)) {
-			dispatch(dectactStalemet());
-		} else if (arbitar.isCheckMate(newPosition, opponet, castelDirection)) {
-			dispatch(dectactCheckmate(appState.promotion_square_info.piece[0]));
+			});
+			console.log("advantages at promotion", advantages);
+			dispatch(updateAdvantage(advantages));
+			dispatch(clearCandidates());
+			if (arbitar.insufficientMaterial(newPosition)) {
+				dispatch(dectactInSufficiantMatarial());
+			} else if (arbitar.isStalemate(newPosition, opponet, castelDirection)) {
+				dispatch(dectactStalemet());
+			} else if (arbitar.isCheckMate(newPosition, opponet, castelDirection)) {
+				dispatch(dectactCheckmate(appState.promotion_square_info.piece[0]));
+			}
+			dispatch(clearPromotionSqourInfo());
+		} catch (e) {
+			console.log(e, "Error happen promotion");
 		}
-		dispatch(clearPromotionSqourInfo());
 	};
 	return (
 		<div

@@ -4,13 +4,22 @@ import Board from "../src/screen/board/chessBoard";
 import AIboard from "./screen/board/AIboard";
 import Lunch from "./screen/game/lunch";
 import Home from "../src/screen/home/home";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import Client from "./client/client";
 import { newSocketConnect } from "./reducer/move";
 import { useAppContext } from "../src/context/Provider";
 import Loading from "./assets/app/lottie/loading.json";
 import Login from "./screen/auth/login/Login";
+import Lottie from "react-lottie";
 function Fallback() {
+	const defaultOptions = {
+		loop: true,
+		autoplay: true,
+		animationData: Loading,
+		rendererSettings: {
+			preserveAspectRatio: "xMidYMid slice",
+		},
+	};
 	return (
 		<div
 			style={{
@@ -19,32 +28,34 @@ function Fallback() {
 				display: "flex",
 				alignItems: "center",
 				justifyContent: "center",
+				backgroundColor: "#D3D3D3",
 			}}>
-			<Loading />
+			<Lottie options={defaultOptions} height={400} width={400} />
 		</div>
 	);
 }
 
 function AuthGaurd() {
 	const [query, setQuery] = useState(null);
-
+	const navigate = useNavigate();
 	const { dispatch } = useAppContext();
 	useEffect(() => {
 		const search = window.location.search;
 		if (search) {
 			const searchParams = new URLSearchParams(search);
-			const queryVar = searchParams.get("auth_token");
 
-			if (queryVar) {
-				setQuery(queryVar);
+			if (searchParams.get("auth_token")) {
+				let queryVar = searchParams.get("auth_token");
+
+				setQuery("auth_token");
 				const client = new Client();
 				dispatch(newSocketConnect({ socket: client }));
-				localStorage.setItem(appConfig.localStorageAuth, JSON.stringify(queryVar));
+				localStorage.setItem(appConfig.localStorageAuth, queryVar);
 			} else {
-				console.log(
-					"%cEmpty Query Param",
-					"background-color: green; color: red; font-size: larger; font-weight: 700"
-				);
+				if (searchParams.get("mode")) {
+					let queryVar = searchParams.get("mode");
+					setQuery(queryVar);
+				}
 			}
 		} else {
 			console.log(
@@ -54,37 +65,11 @@ function AuthGaurd() {
 		}
 	}, []);
 
-	if (query) {
-		return <Home />;
+	if (query === appConfig.mode) {
+		navigate("/play-game-ai", { replace: true });
 	}
 
-	return (
-		<>
-			<section className='page_404'>
-				<div className='container'>
-					<div className='row'>
-						<div className='col-sm-12 '>
-							<div className='col-sm-10 col-sm-offset-1  text-center'>
-								<div className='four_zero_four_bg'>
-									<h1 className='text-center '>404</h1>
-								</div>
-
-								<div className='contant_box_404'>
-									<h3 className='h2'>Look like you're lost</h3>
-
-									<p>You are not authorized to play game !</p>
-
-									<a href='' className='link_404'>
-										Authentication Faild
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
-		</>
-	);
+	return <>{query === "auth_token" ? <Home /> : <Fallback />}</>;
 }
 
 function App() {
